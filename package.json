@@ -10,13 +10,20 @@
   "scripts": {
     "dev": "set NODE_PATH=./lib&& nodemon --exec babel-node lib/server.js",
     "webpack": "webpack -wd",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "verify-tests": "jest --coverage",
+    "build-webpack": "webpack -p",
+    "build-node": "babel lib -d build --copy-files",
+    "start-prod": "set NODE_ENV=production&& set NODE_PATH=./build&& pm2 start build/server.js -i max --name appProd"
   },
   "babel": {
     "presets": [
       "react",
-      "env",
-      "stage-2"
+      ["env", {"targets": {"node": "current"}}]
+    ],
+    "plugins":[
+      "transform-class-properties",
+      "transform-object-rest-spread"
     ]
   },
   "devDependencies": {
